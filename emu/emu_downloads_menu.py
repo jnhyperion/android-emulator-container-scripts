@@ -248,8 +248,8 @@ class LicensedObject(object):
 
     def download(self, url, dest):
         """"Downloads the released pacakage forto the dest."""
-        if self.license and self.license.accept():
-            return _download(url, dest)
+        # if self.license and self.license.accept():
+        return _download(url, dest)
 
 
 class SysImgInfo(LicensedObject):
@@ -275,13 +275,17 @@ class SysImgInfo(LicensedObject):
             self.tag = "android"
         self.abi = details.find("abi").text
         self.zip = pkg.find(".//url").text
-        self.url = "https://dl.google.com/android/repository/sys-img/%s/%s" % (self.tag, self.zip)
+        if self.tag == 'android-automotive':
+            self.url = self.zip
+        else:
+            self.url = "https://dl.google.com/android/repository/sys-img/%s/%s" % (self.tag, self.zip)
 
     def download(self, dest=None):
         dest = dest or os.path.join(
             os.getcwd(), "sys-img-{}-{}-{}-{}.zip".format(self.tag, self.api, self.letter, self.abi)
         )
         print("Downloading system image: {} {} {} {} to {}".format(self.tag, self.api, self.letter, self.abi, dest))
+        print(self.url)
         return super(SysImgInfo, self).download(self.url, dest)
 
     def __str__(self):
@@ -316,6 +320,7 @@ class EmuInfo(LicensedObject):
         """"Downloads the released pacakage for the given os to the dest."""
         dest = dest or os.path.join(os.getcwd(), "emulator-{}.zip".format(self.version))
         print("Downloading emulator: {} {} to {}".format(self.channel, self.version, dest))
+        print(self.urls[hostos])
         return super(EmuInfo, self).download(self.urls[hostos], dest)
 
     def __str__(self):
