@@ -243,6 +243,8 @@ class LicensedObject(object):
         _ = pkg.find("uses-license")
         if _:
             self.license = licenses[_.attrib["ref"]]
+        else:
+            self.license = None
 
     def download(self, url, dest):
         """"Downloads the released pacakage forto the dest."""
