@@ -32,6 +32,7 @@ SYSIMG_REPOS = [
     "https://dl.google.com/android/repository/sys-img/android/sys-img2-1.xml",
     "https://dl.google.com/android/repository/sys-img/google_apis/sys-img2-1.xml",
     "https://dl.google.com/android/repository/sys-img/google_apis_playstore/sys-img2-1.xml",
+    'http://172.16.214.71:8000/tn-sys-img.xml'
 ]
 
 EMU_REPOS = ["https://dl.google.com/android/repository/repository2-1.xml"]
@@ -239,11 +240,13 @@ class LicensedObject(object):
     """A dowloadable object for which a license needs to be accepted."""
 
     def __init__(self, pkg, licenses):
-        self.license = licenses[pkg.find("uses-license").attrib["ref"]]
+        _ = pkg.find("uses-license")
+        if _:
+            self.license = licenses[_.attrib["ref"]]
 
     def download(self, url, dest):
         """"Downloads the released pacakage forto the dest."""
-        if self.license.accept():
+        if self.license and self.license.accept():
             return _download(url, dest)
 
 
