@@ -179,9 +179,9 @@ log_version_info
 clean_up
 install_console_tokens
 install_adb_keys
-install_grpc_certs
-setup_pulse_audio
-forward_loggers
+# install_grpc_certs
+# setup_pulse_audio
+# forward_loggers
 
 # Override config settings that the user forcefully wants to override.
 if [ ! -z "${AVD_CONFIG}" ]; then
@@ -199,10 +199,10 @@ socat -d tcp-listen:5555,reuseaddr,fork tcp:127.0.0.1:5557 &
 # Basic launcher command, additional flags can be added.
 LAUNCH_CMD=emulator/emulator
 var_append LAUNCH_CMD -avd Pixel2 -verbose
-var_append LAUNCH_CMD -ports 5556,5557 -grpc 8554 -no-window
+var_append LAUNCH_CMD -ports 5556,5557 -no-window
 var_append LAUNCH_CMD -skip-adb-auth -no-snapshot
 var_append LAUNCH_CMD -shell-serial file:/tmp/android-unknown/kernel.log
-var_append LAUNCH_CMD -logcat-output /tmp/android-unknown/logcat.log
+# var_append LAUNCH_CMD -logcat-output /tmp/android-unknown/logcat.log
 var_append LAUNCH_CMD -feature AllowSnapshotMigration
 var_append LAUNCH_CMD -gpu swiftshader_indirect {{extra}}
 
